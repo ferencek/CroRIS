@@ -1,6 +1,7 @@
 import requests
 import json
 import bibtexparser
+import xmltodict
 from argparse import ArgumentParser
 
 import configuration as cfg
@@ -23,12 +24,26 @@ def get_list_of_papers(list_of_papers):
     return bibtexparser.loads(temp)
 
 
+def get_title_and_abstract(eprint):
+    # Fetch paper data from arXiv in XML format locally converted to a Python dictionary
+    # More info at: https://info.arxiv.org/help/api/basics.html
+    #               https://info.arxiv.org/help/api/user-manual.html
+    url = 'http://export.arxiv.org/api/query?id_list={}'.format(eprint)
+    paper_data = xmltodict.parse(requests.get(url).content)
+
+    title = paper_data['feed']['entry']['title'].strip().replace('\n ', '')
+    abstract = paper_data['feed']['entry']['summary'].strip().replace('\n', ' ')
+
+    return [title, abstract]
+
+
 # In the past the Inspire HEP database used to include the journal series letter
 # in the volume number instead of keeping it in the journal name. Below is a list
 # affected journals and the journal_name(...) function that addresses this. In the
 # meantime this seems to have been fixed but keeping the function for backward
 # compatibility
 incomplete_journal_names = ['Eur. Phys. J.', 'Phys. Lett.', 'Phys. Rev.']
+
 
 def get_name(name, volume):
     if name in incomplete_journal_names:
@@ -88,11 +103,19 @@ def prepare_input(list_of_papers, output_file):
             source = (t['source'].strip().lower() if 'source' in t else '')
             if title == '' or source == 'arxiv':
                 title = t['title'].strip()
+        arXiv_found = False
         abstract = ''
         for a in paper_data['metadata']['abstracts']:
             source = (a['source'].strip().lower() if 'source' in a else '')
             if abstract == '' or source == 'arxiv':
                 abstract = a['value'].strip()
+                if source == 'arxiv':
+                    arXiv_found = True
+
+        # If arXiv source is not found on Inspire HEP but e-Print exists, fetch title
+        # and abstract directly from arXiv
+        if eprint and not arXiv_found:
+            title, abstract = get_title_and_abstract(eprint)
 
         # Authors
         all_authors = paper_data['metadata']['authors']
