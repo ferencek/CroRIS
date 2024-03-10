@@ -1,7 +1,6 @@
 import requests
 import json
 import bibtexparser
-import xmltodict
 from argparse import ArgumentParser
 
 import configuration as cfg
@@ -22,19 +21,6 @@ def get_list_of_papers(list_of_papers):
       temp = f.read()
 
     return bibtexparser.loads(temp)
-
-
-def get_title_and_abstract(eprint):
-    # Fetch paper data from arXiv in XML format locally converted to a Python dictionary
-    # More info at: https://info.arxiv.org/help/api/basics.html
-    #               https://info.arxiv.org/help/api/user-manual.html
-    url = 'http://export.arxiv.org/api/query?id_list={}'.format(eprint)
-    paper_data = xmltodict.parse(requests.get(url).content)
-
-    title = paper_data['feed']['entry']['title'].strip().replace('\n ', '')
-    abstract = paper_data['feed']['entry']['summary'].strip().replace('\n', ' ')
-
-    return [title, abstract]
 
 
 # In the past the Inspire HEP database used to include the journal series letter
@@ -96,12 +82,17 @@ def prepare_input(list_of_papers, output_file):
         url = 'https://inspirehep.net/api/doi/{}'.format(doi)
         paper_data = requests.get(url).json()
 
-        # Get title and abstract from arXiv or INSPIRE since they don't have BibTeX syntax
-        if 'eprint' in p:
-            title, abstract = get_title_and_abstract(eprint)
-        else:
-            title = paper_data['metadata']['titles'][0]['title'].strip()
-            abstract = paper_data['metadata']['abstracts'][0]['value'].strip()
+        # Get title and abstract from the first available source but give priority to arXiv
+        title    = ''
+        for t in paper_data['metadata']['titles']:
+            source = (t['source'].strip().lower() if 'source' in t else '')
+            if title == '' or source == 'arxiv':
+                title = t['title'].strip()
+        abstract = ''
+        for a in paper_data['metadata']['abstracts']:
+            source = (a['source'].strip().lower() if 'source' in a else '')
+            if abstract == '' or source == 'arxiv':
+                abstract = a['value'].strip()
 
         # Authors
         all_authors = paper_data['metadata']['authors']
