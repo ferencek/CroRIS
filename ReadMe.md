@@ -1,6 +1,6 @@
 # CroRIS tool
 
-A tool for uploading article entries to CroRIS database. The instructions below were tested on Ubuntu 20.04 but might also work on other Linux distributions.
+A tool for uploading article entries to CroRIS database. The instructions below were tested on Ubuntu 20.04 but might also work on other Linux distributions. The tool has been derived from an older [CROSBI tool](https://gitlab.cern.ch/CMS-IRB/crosbi) which is no longer in use.
 
 ## Getting started
 
