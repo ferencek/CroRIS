@@ -25,7 +25,7 @@ cd CroRIS
 
 ### Getting the list of articles
 
-1. Go to http://inspirehep.net
+1. Go to the [Inspire HEP](https://inspirehep.net) database
 
 2. Get the list of articles by using the following command (2023 is used here just as an example)
 
