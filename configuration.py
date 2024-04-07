@@ -2,7 +2,7 @@
 # Configuration
 # --------------------------------------------------
 
-# Some always used generic keywords (should this exclusively come from Insipre HEP?)
+# Some always used generic keywords (should this exclusively come from Inspire HEP?)
 keywords = ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS']
 
 # Institutions
@@ -47,6 +47,24 @@ authors = {
     'Susa, T'         : ['Šuša, Tatjana',                      4291,                 66],
     'Sculac, A'       : ['Šćulac, Ana',                        None,                 21],
     'Sculac, T'       : ['Šćulac, Toni',                      33266,                 114]
+}
+
+# Info that is in common to all publications
+# (see https://wiki.srce.hr/display/CRORIS/CROSBI+API for more info)
+pub_common = {
+    "tip": 760,
+    "status": 965,
+    "suradnja_medjunarodna": "D",
+    "recenzija": {
+        "status": 900,
+        "vrsta": 903
+    },
+    "poveznice": [
+        {
+            "url_vrsta": 990,
+            "url": "https://doi.org/"
+        }
+    ]
 }
 
 # Currently known journals

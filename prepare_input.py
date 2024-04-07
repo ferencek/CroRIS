@@ -2,6 +2,7 @@ import requests
 import json
 import bibtexparser
 import xmltodict
+import copy
 from argparse import ArgumentParser
 
 import configuration as cfg
@@ -13,7 +14,7 @@ authors          = cfg.authors
 journals         = cfg.journals
 issn             = cfg.issn
 keywords         = cfg.keywords
-
+pub_common       = cfg.pub_common
 # --------------------------------------------------
 
 
@@ -212,6 +213,7 @@ def prepare_input(list_of_papers, output_file):
 
         # Save output
         _temp = {}
+        _temp.update(copy.deepcopy(pub_common))
         _temp['doi']             = doi
         _temp['autor_string']    = authors_string
         _temp['naslov']          = title
