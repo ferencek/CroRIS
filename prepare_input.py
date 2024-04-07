@@ -121,6 +121,18 @@ def prepare_input(list_of_papers, output_file):
         # Authors
         all_authors = paper_data['metadata']['authors']
 
+        # List that contains authors' CroRIS IDs
+        autori = []
+        author_dict = {
+            "croris_id": None,
+            "oib": None,
+            "mbz": None
+        }
+
+        # Set that contains author institutions' CroRIS IDs
+        inst_ids = set()
+
+        # List that contains authors' full names
         authors_pretty = []
 
         # All authors
@@ -132,6 +144,10 @@ def prepare_input(list_of_papers, output_file):
                 author_text = author['full_name']
                 if a in author_text:
                     authors_pretty.append(a_pretty)
+                    a_dict = copy.deepcopy(author_dict)
+                    a_dict['croris_id'] = authors[a][1]
+                    autori.append(a_dict)
+                    inst_ids.add(authors[a][2])
                     break
 
         # First author
@@ -215,12 +231,12 @@ def prepare_input(list_of_papers, output_file):
         _temp = {}
         _temp.update(copy.deepcopy(pub_common))
         _temp['doi']             = doi
+        _temp['poveznice'][0]['url'] += doi
         _temp['autor_string']    = authors_string
-        _temp['naslov']          = title
+        _temp['autori']    = autori
         if collaboration:
             _temp['kolaboracija']    = collaboration
         _temp['godina']          = year
-        _temp['casopis']         = journal
         _temp['issn']            = issn[0]
         _temp['e-issn']          = issn[1]
         _temp['volumen']         = volume
@@ -238,8 +254,29 @@ def prepare_input(list_of_papers, output_file):
         if page_tot:
             _temp['ukupno_stranica'] = page_tot
             validity_counter[1] += 1
-        _temp['sazetak']         = abstract
-        _temp['kljucne_rijeci']  = '; '.join(keywords)
+
+        ml = [
+            {
+                "jezik": "en",
+                "trans": "o",
+                "naslov": title,
+                "sazetak": abstract,
+                "kljucne_rijeci": '; '.join(keywords)
+            }
+        ]
+        _temp['ml'] = ml
+
+        inst_dict = {
+            "croris_id": None,
+            "mbu": None,
+            "uloga": 941
+        }
+        ustanove = []
+        for i_id in inst_ids:
+            i_dict = copy.deepcopy(inst_dict)
+            i_dict['croris_id'] = i_id
+            ustanove.append(i_dict)
+        _temp['ustanove'] = ustanove
 
         # Catch articles with unknown journal or invalid page info status
         if 'Unknown journal' in journal or (validity_counter[0] < 2 and validity_counter[1] < 2):
@@ -265,7 +302,7 @@ def prepare_input(list_of_papers, output_file):
         print('Article number:', (article_no if article_no != '' else 'N/A'))
         print('Total pages:', (page_tot if page_tot != '' else 'N/A'))
         print('\nAbstract:', abstract)
-        print('\nKeywords:', keywords)
+        print('\nKeywords:', '; '.join(keywords))
 
     print('------------------------------------------------')
 
