@@ -45,7 +45,9 @@ Please note that the returned list of articles could contain errata published in
 python prepare_input.py -i list_of_papers.bib -o CroRIS_input.json |& tee prepare_input_`date "+%Y%m%d_%H%M%S"`.log
 ```
 
-**NOTE:** Piping the output to the `tee` command will both print it to the screen and save it in a log file containing a time stamp in its name. Before running the script, please check that the `keywords`, `authors`, `journals`, and `issn` are correctly defined in [`configuration.py`](https://gitlab.cern.ch/CMS-IRB/CroRIS/blob/master/configuration.py)
+**NOTE:** Piping the output to the `tee` command will both print it to the screen and save it in a log file containing a time stamp in its name.
+
+Before running the script, please check that the `keywords`, `authors`, `journals`, and `issn` are correctly defined in [`configuration.py`](https://gitlab.cern.ch/CMS-IRB/CroRIS/blob/master/configuration.py)
 
 In the above example command `prepare_input.py` takes `list_of_papers.bib` as input and collects all the information needed as input for CroRIS and stores it in the `CroRIS_input.json` file.
 
