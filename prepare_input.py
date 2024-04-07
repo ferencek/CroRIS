@@ -125,7 +125,8 @@ def prepare_input(list_of_papers, output_file):
         # All authors
         for author in all_authors:
             # Cro authors
-            for a, a_pretty in authors.items():
+            for a in authors:
+                a_pretty = authors[a][0]
 
                 author_text = author['full_name']
                 if a in author_text:
