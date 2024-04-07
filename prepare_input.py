@@ -210,6 +210,7 @@ def prepare_input(list_of_papers, output_file):
         # Here imposing the limit with some safety margin
         keywords_length = 0
         keywords_lower = []
+        _keywords = copy.deepcopy(keywords)
         for k in keywords:
             if (keywords_length + len(k) + 2) < 480:
                 keywords_length += (len(k) + 2)
@@ -222,7 +223,7 @@ def prepare_input(list_of_papers, output_file):
             if not k_text.lower() in keywords_lower:
                 if (keywords_length + len(k_text) + 2) < 480:
                     keywords_length += (len(k_text) + 2)
-                    keywords.append(k_text)
+                    _keywords.append(k_text)
                 else:
                     break
 
@@ -265,7 +266,7 @@ def prepare_input(list_of_papers, output_file):
                 "trans": "o",
                 "naslov": title,
                 "sazetak": abstract,
-                "kljucne_rijeci": '; '.join(keywords)
+                "kljucne_rijeci": '; '.join(_keywords)
             }
         ]
         _temp['ml'] = ml
@@ -306,7 +307,7 @@ def prepare_input(list_of_papers, output_file):
         print('Article number:', (article_no if article_no != '' else 'N/A'))
         print('Total pages:', (page_tot if page_tot != '' else 'N/A'))
         print('\nAbstract:', abstract)
-        print('\nKeywords:', '; '.join(keywords))
+        print('\nKeywords:', '; '.join(_keywords))
 
     print('------------------------------------------------')
 
