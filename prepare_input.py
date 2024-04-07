@@ -76,6 +76,7 @@ def get_issn(name):
 
 
 def prepare_input(list_of_papers, output_file):
+    dois  = []
     data  = []
     error = []
 
@@ -90,6 +91,12 @@ def prepare_input(list_of_papers, output_file):
 
         # DOI
         doi = p['doi']
+        # Skip any duplicates
+        if doi.lower() in dois:
+            print('\nWARNING: This paper with DOI:{} is a duplicate and will be skipped.'.format(doi))
+            continue
+        else:
+            dois.append(doi.lower())
 
         # Get the arXiv paper id (if defined)
         eprint = (p['eprint'] if 'eprint' in p else '')
