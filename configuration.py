@@ -2,7 +2,10 @@
 # Configuration
 # --------------------------------------------------
 
-# Some always used generic keywords (should this exclusively come from Inspire HEP?)
+# Collaboration (if set to None, will be taken from the input BibTeX file)
+collaboration = 'CMS'
+
+# Some always used generic keywords
 keywords = ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS']
 
 # Institutions

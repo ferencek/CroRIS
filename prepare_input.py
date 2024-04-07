@@ -10,11 +10,12 @@ import configuration as cfg
 # --------------------------------------------------
 # Configuration
 
+collaboration    = cfg.collaboration
+keywords         = cfg.keywords
 authors          = cfg.authors
+pub_common       = cfg.pub_common
 journals         = cfg.journals
 issn             = cfg.issn
-keywords         = cfg.keywords
-pub_common       = cfg.pub_common
 # --------------------------------------------------
 
 
@@ -162,7 +163,10 @@ def prepare_input(list_of_papers, output_file):
         authors_string += ' ; ... ; ' + all_authors[len(all_authors)-1]['full_name']
 
         # Collaboration
-        collaboration = ((p['collaboration'] + ' Collaboration')  if 'collaboration' in p else '')
+        if collaboration is not None:
+            _collaboration = collaboration + ' Collaboration'
+        else:
+            _collaboration = ((p['collaboration'] + ' Collaboration')  if 'collaboration' in p else '')
 
         # Year
         year = p['year']
@@ -234,8 +238,8 @@ def prepare_input(list_of_papers, output_file):
         _temp['poveznice'][0]['url'] += doi
         _temp['autor_string']    = authors_string
         _temp['autori']    = autori
-        if collaboration:
-            _temp['kolaboracija']    = collaboration
+        if _collaboration:
+            _temp['kolaboracija'] = _collaboration
         _temp['godina']          = year
         _temp['issn']            = issn[0]
         _temp['e-issn']          = issn[1]
@@ -290,7 +294,7 @@ def prepare_input(list_of_papers, output_file):
         print('arXiv:', (eprint if eprint != '' else 'N/A'))
         print('Title:', title)
         print('Authors:', authors_string)
-        print('Collaboration:', (collaboration if collaboration != '' else 'N/A'))
+        print('Collaboration:', (_collaboration if _collaboration else 'N/A'))
         print('Year:', year)
         print('Journal:', journal)
         print('ISSN:', issn[0])
