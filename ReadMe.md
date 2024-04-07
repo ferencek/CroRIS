@@ -49,4 +49,4 @@ python prepare_input.py -i list_of_papers.bib -o CroRIS_input.json |& tee prepar
 
 In the above example command `prepare_input.py` takes `list_of_papers.bib` as input and collects all the information needed as input for CroRIS and stores it in the `CroRIS_input.json` file.
 
-**NOTE:** The format of the output JSON file does not yet fully conform to the specifications of the [CroRIS API](https://wiki.srce.hr/display/CRORIS/CROSBI+API). This is on the to-do list.
+The format of the output JSON file conforms to the specifications of the [CroRIS API](https://wiki.srce.hr/display/CRORIS/CROSBI+API).
