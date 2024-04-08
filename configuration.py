@@ -48,7 +48,7 @@ authors = {
     'Sudic, L'        : ['Sudić, Lucija',                      None,                 66], # inactive (djevojačko / maiden Tikvica)
     'Tikvica, L'      : ['Tikvica, Lucija',                    None,                 66], # inactive
     'Susa, T'         : ['Šuša, Tatjana',                      4291,                 66],
-    'Sculac, A'       : ['Šćulac, Ana',                        None,                 21],
+    'Sculac, A'       : ['Šćulac, Ana',                       46885,                 21],
     'Sculac, T'       : ['Šćulac, Toni',                      33266,                 114]
 }
 
