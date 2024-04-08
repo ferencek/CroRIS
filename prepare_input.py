@@ -14,6 +14,8 @@ collaboration    = cfg.collaboration
 keywords         = cfg.keywords
 authors          = cfg.authors
 pub_common       = cfg.pub_common
+inst_dict        = cfg.inst_dict
+proj_dict        = cfg.proj_dict
 journals         = cfg.journals
 issn             = cfg.issn
 # --------------------------------------------------
@@ -278,17 +280,20 @@ def prepare_input(list_of_papers, output_file):
         ]
         _temp['ml'] = ml
 
-        inst_dict = {
-            "croris_id": None,
-            "mbu": None,
-            "uloga": 941
-        }
         ustanove = []
         for i_id in inst_ids:
             i_dict = copy.deepcopy(inst_dict)
             i_dict['croris_id'] = i_id
             ustanove.append(i_dict)
         _temp['ustanove'] = ustanove
+
+        projekti = []
+        if 'projects' in p:
+            for proj in p['projects'].split(','):
+                p_dict = copy.deepcopy(proj_dict)
+                p_dict['croris_id'] = int(proj.strip())
+                projekti.append(p_dict)
+            _temp['projekti'] = projekti
 
         # Catch articles with unknown journal or invalid page info status
         if 'Unknown journal' in journal or (validity_counter[0] < 2 and validity_counter[1] < 2):

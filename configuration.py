@@ -69,6 +69,17 @@ pub_common = {
         }
     ]
 }
+# Institution template dictionary
+inst_dict = {
+    "croris_id": None,
+    "mbu": None,
+    "uloga": 941
+}
+# Project template dictionary
+proj_dict = {
+    "croris_id": None,
+    "uloga": 1020
+}
 
 # Currently known journals
 journals = {
