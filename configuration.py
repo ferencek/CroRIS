@@ -34,7 +34,7 @@ authors = {
     'Lelas, D'        : ['Lelas, Damir',                      27649,                 21],
     'Lelas, K'        : ['Lelas, Karlo',                      27596,                 21], # now at Faculty of Textile Technology, University of Zagreb
     'Luetic, J'       : ['Luetić, Jelena',                    30615,                 66], # inactive
-    'Majumder, D'     : ['Majumder, Devdatta',                30615,                 66], # inactive
+    'Majumder, D'     : ['Majumder, Devdatta',                36095,                 66], # inactive
     'Mekterovic, D'   : ['Mekterović, Darko',                  2640,                 66], # now at UniRi
     'Mesic, B'        : ['Mesić, Benjamin',                   33599,                 66], # inactive
     'Micanovic, S'    : ['Mićanović, Saša',                   21402,                 66], # now at UniRi
