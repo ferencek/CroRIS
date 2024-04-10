@@ -161,12 +161,11 @@ def prepare_input(list_of_papers, output_file):
                     break
 
         # First author
-        authors_string = all_authors[0]['full_name'] + '; ...'
+        authors_string = all_authors[0]['full_name'] + ' ; ... ; '
 
         # Sorted authors from Croatian institutions
         authors_pretty.sort()
-        for a_pretty in authors_pretty:
-            authors_string += ' ; ' + a_pretty
+        authors_string += ' ; '.join(authors_pretty)
 
         # Last author
         authors_string += ' ; ... ; ' + all_authors[len(all_authors)-1]['full_name']
@@ -275,7 +274,7 @@ def prepare_input(list_of_papers, output_file):
                 "trans": "o",
                 "naslov": title,
                 "sazetak": abstract,
-                "kljucne_rijeci": '; '.join(_keywords)
+                "kljucne_rijeci": ' ; '.join(_keywords)
             }
         ]
         _temp['ml'] = ml
@@ -319,7 +318,7 @@ def prepare_input(list_of_papers, output_file):
         print('Article number:', (article_no if article_no != '' else 'N/A'))
         print('Total pages:', (page_tot if page_tot != '' else 'N/A'))
         print('\nAbstract:', abstract)
-        print('\nKeywords:', '; '.join(_keywords))
+        print('\nKeywords:', ' ; '.join(_keywords))
 
     print('------------------------------------------------')
 
