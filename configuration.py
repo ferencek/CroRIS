@@ -61,13 +61,13 @@ pub_common = {
     "recenzija": {
         "status": 900,
         "vrsta": 903
-    },
-    "poveznice": [
-        {
-            "url_vrsta": 990,
-            "url": "https://doi.org/"
-        }
-    ]
+    }#,
+    #"poveznice": [
+        #{
+            #"url_vrsta": 990,
+            #"url": "https://doi.org/"
+        #}
+    #]
 }
 # Institution template dictionary
 inst_dict = {
