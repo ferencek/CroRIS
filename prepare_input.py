@@ -3,9 +3,13 @@ import json
 import bibtexparser
 import xmltodict
 import copy
+import locale
 from argparse import ArgumentParser
 
 import configuration as cfg
+
+# For correct author name sorting
+locale.setlocale(locale.LC_COLLATE, "hr_HR.UTF-8")
 
 # --------------------------------------------------
 # Configuration
@@ -164,8 +168,7 @@ def prepare_input(list_of_papers, output_file):
         authors_string = all_authors[0]['full_name'] + ' ; ... ; '
 
         # Sorted authors from Croatian institutions
-        authors_pretty.sort()
-        authors_string += ' ; '.join(authors_pretty)
+        authors_string += ' ; '.join(sorted(authors_pretty, key=locale.strxfrm))
 
         # Last author
         authors_string += ' ; ... ; ' + all_authors[len(all_authors)-1]['full_name']
