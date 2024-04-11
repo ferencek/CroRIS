@@ -32,12 +32,12 @@ authors = {
     'Kadija, K'       : ['Kadija, Krešo',                     17565,                 66], # retired
     'Kovac, M'        : ['Kovač, Marko',                      30446,                 114],
     'Lelas, D'        : ['Lelas, Damir',                      27649,                 21],
-    'Lelas, K'        : ['Lelas, Karlo',                      27596,                 21], # now at Faculty of Textile Technology, University of Zagreb
+    'Lelas, K'        : ['Lelas, Karlo',                      27596,                 21], # now at Faculty of Textile Technology, University of Zagreb, no longer in CMS
     'Luetic, J'       : ['Luetić, Jelena',                    30615,                 66], # inactive
     'Majumder, D'     : ['Majumder, Devdatta',                36095,                 66], # inactive
-    'Mekterovic, D'   : ['Mekterović, Darko',                  2640,                 66], # now at UniRi
+    'Mekterovic, D'   : ['Mekterović, Darko',                  2640,                 66], # now at UniRi, no longer in CMS
     'Mesic, B'        : ['Mesić, Benjamin',                   33599,                 66], # inactive
-    'Micanovic, S'    : ['Mićanović, Saša',                   21402,                 66], # now at UniRi
+    'Micanovic, S'    : ['Mićanović, Saša',                   21402,                 66], # now at UniRi, no longer in CMS
     'Mishra, S'       : ['Mishra, Saswat',                    35489,                 66],
     'Morovic, S'      : ['Morović, Srećko',                   21401,                 66], # now at UCSD
     'Petkovic, A'     : ['Petković, Andro',                   37949,                 114],
