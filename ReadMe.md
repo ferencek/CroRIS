@@ -74,7 +74,7 @@ Send the output JSON file `CroRIS_input.json` to croris-app@srce.hr and system a
 
 To link project(s) with a specific publication, an additional `projects` field containing a comma-separated list of project CroRIS IDs needs to be added to that publication's entry in the input BibTeX file as shown in the following example
 
-```LaTeX
+```
 @article{CMS:2022suh,
     author = "Tumasyan, Armen and others",
     collaboration = "CMS",
