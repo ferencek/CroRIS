@@ -106,6 +106,7 @@ journals = {
     'Phys. Lett. B'           : 'Physics letters. B',
     'Phys. Rev. C'            : 'Physical review. C',
     'Phys. Rev. D'            : 'Physical review. D',
+    'Nature'                  : 'Nature',
     'Nature Phys.'            : 'Nature physics',
     'Comput. Softw. Big Sci.' : 'Computing and software for big science',
     'Nucl. Instrum. Meth. A'  : 'Nuclear instruments & methods in physics research. Section A, Accelerators, spectrometers, detectors and associated equipment'
@@ -119,9 +120,10 @@ issn = {
     'Eur. Phys. J. C'         : ['1434-6044', '1434-6052'],
     'JINST'                   : ['1748-0221', '1748-0221'],
     'Phys. Lett. B'           : ['0370-2693', '1873-2445'],
-    'Nature Phys.'            : ['1745-2473', '1745-2481'],
     'Phys. Rev. C'            : ['2469-9985', '2469-9993'],
     'Phys. Rev. D'            : ['2470-0010', '2470-0029'],
+    'Nature'                  : ['0028-0836', '1476-4687'],
+    'Nature Phys.'            : ['1745-2473', '1745-2481'],
     'Comput. Softw. Big Sci.' : ['2510-2036', '2510-2044'],
     'Nucl. Instrum. Meth. A'  : ['0168-9002', '1872-9576']
 }
