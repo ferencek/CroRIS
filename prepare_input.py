@@ -367,7 +367,7 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
 if __name__ == '__main__':
     # Usage example
-    Description = "Example: %(prog)s -i list_of_papers.bib -o CroRIS_input.json"
+    Description = "Example: %(prog)s -c cms -i list_of_papers.bib -o CroRIS_input.json"
     
     # Input arguments
     parser = ArgumentParser(description=Description)
