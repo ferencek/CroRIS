@@ -14,8 +14,6 @@ locale.setlocale(locale.LC_COLLATE, "hr_HR.UTF-8")
 # --------------------------------------------------
 # Configuration
 
-collaboration    = cfg.collaboration
-keywords         = cfg.keywords
 authors          = cfg.authors
 pub_common       = cfg.pub_common
 inst_dict        = cfg.inst_dict
@@ -81,7 +79,7 @@ def get_issn(name):
     return issn[name]
 
 
-def prepare_input(list_of_papers, output_file):
+def prepare_input(list_of_papers, output_file, collaboration, keywords):
     dois  = []
     data  = []
     error = []
@@ -107,7 +105,7 @@ def prepare_input(list_of_papers, output_file):
         # Get the arXiv paper id (if defined)
         eprint = (p['eprint'] if 'eprint' in p else '')
     
-        # Fetch paper data from INSPIRE in JSON format
+        # Fetch paper data from Inspire HEP in JSON format
         # More info at: https://github.com/inspirehep/rest-api-doc
         url = 'https://inspirehep.net/api/doi/{}'.format(doi)
         paper_data = requests.get(url).json()
@@ -174,10 +172,13 @@ def prepare_input(list_of_papers, output_file):
         authors_string += ' ; ... ; ' + all_authors[len(all_authors)-1]['full_name']
 
         # Collaboration
-        if collaboration is not None:
-            _collaboration = collaboration + ' Collaboration'
+        if collaboration != 'off':
+            if collaboration == 'auto':
+                _collaboration = ((p['collaboration'] + ' Collaboration')  if 'collaboration' in p else '')
+            else:
+                _collaboration = collaboration + ' Collaboration'
         else:
-            _collaboration = ((p['collaboration'] + ' Collaboration')  if 'collaboration' in p else '')
+            _collaboration = ''
 
         # Year
         year = p['year']
@@ -346,6 +347,11 @@ if __name__ == '__main__':
     # Input arguments
     parser = ArgumentParser(description=Description)
 
+    parser.add_argument("-c", "--configuration", dest="configuration",
+                      help="Configuration set to use (case-insensitive). Options: {}".format(', '.join(cfg.cfg_sets.keys())),
+                      metavar="CONFIGURATION",
+                      required=True)
+
     parser.add_argument("-i", "--input", dest="input",
                       help="Input BibTeX file",
                       metavar="INPUT",
@@ -362,5 +368,11 @@ if __name__ == '__main__':
     # Load list of papers from a BibTeX file
     list_of_papers = get_list_of_papers(options.input)
 
+    # Collaboration
+    collaboration = cfg.cfg_sets[options.configuration.lower()]['collaboration']
+
+    # Keywords
+    keywords = cfg.cfg_sets[options.configuration.lower()]['keywords']
+
     # Create input for CroRIS
-    prepare_input(list_of_papers, options.output)
+    prepare_input(list_of_papers, options.output, collaboration, keywords)

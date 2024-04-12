@@ -2,11 +2,23 @@
 # Configuration
 # --------------------------------------------------
 
-# Collaboration (if set to None, will be taken from the input BibTeX file)
-collaboration = 'CMS'
+# Configuration sets (keys need to be in lower case)
+cfg_sets = {
+    'generic': {
+        # If set to 'off', collaboration field will be ignored
+        # If set to 'auto', collaboration field will be taken from the input BibTeX file (if defined there, otherwise ignored)
+        'collaboration': 'auto',
 
-# Some always used generic keywords
-keywords = ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS']
+        # Some always used generic keywords, the rest taken from Inspire HEP
+        'keywords': []
+    },
+    'cms': {
+        'collaboration': 'CMS',
+
+        # Some always used generic keywords, the rest taken from Inspire HEP
+        'keywords': ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS']
+    }
+}
 
 # Institutions
 # CroRIS_ID    Name
