@@ -12,14 +12,9 @@ import configuration as cfg
 locale.setlocale(locale.LC_COLLATE, "hr_HR.UTF-8")
 
 # --------------------------------------------------
-# Configuration
-
-authors          = cfg.authors
-pub_common       = cfg.pub_common
-inst_dict        = cfg.inst_dict
-proj_dict        = cfg.proj_dict
-journals         = cfg.journals
-issn             = cfg.issn
+# Known journals
+journals = cfg.journals
+issn     = cfg.issn
 # --------------------------------------------------
 
 
@@ -94,7 +89,17 @@ def get_issn(name):
     return issn[name]
 
 
-def prepare_input(list_of_papers, output_file, collaboration, keywords, exclusion_list):
+def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
+    # --------------------------------------------------
+    # Configuration
+    collaboration = cfg.cfg_sets[configuration]['collaboration']
+    keywords      = cfg.cfg_sets[configuration]['keywords']
+    authors       = cfg.authors
+    pub_common    = cfg.pub_common
+    inst_dict     = cfg.inst_dict
+    proj_dict     = cfg.proj_dict
+    # --------------------------------------------------
+
     dois  = []
     data  = []
     error = []
@@ -391,16 +396,10 @@ if __name__ == '__main__':
     # Load list of papers from a BibTeX file
     list_of_papers = get_list_of_papers(options.input)
 
-    # Collaboration
-    collaboration = cfg.cfg_sets[options.configuration.lower()]['collaboration']
-
-    # Keywords
-    keywords = cfg.cfg_sets[options.configuration.lower()]['keywords']
-
     # Optional exclusion list
     exclusion_list = []
     if options.exclude:
         exclusion_list = get_exclusion_list(options.exclude)
 
     # Create input for CroRIS
-    prepare_input(list_of_papers, options.output, collaboration, keywords, exclusion_list)
+    prepare_input(list_of_papers, options.output, options.configuration.lower(), exclusion_list)
