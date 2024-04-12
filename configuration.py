@@ -17,7 +17,10 @@ cfg_sets = {
         'collaboration': 'CMS',
 
         # Some always used generic keywords, the rest taken from Inspire HEP
-        'keywords': ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS']
+        'keywords': ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS'],
+
+        # Area/Field/Branch (Područje/Polje/Grana)
+        "ppg": ["1", "1.02", "1.02.02"] # Prirodne znanosti / Fizika / Fizika elementarnih čestica i polja
     }
 }
 
@@ -74,7 +77,6 @@ pub_common = {
         "status": 900, # 900 = "da"
         "vrsta": 903 # 903 = "međunarodna recenzija"
     },
-    "ppg": ["1", "1.02", "1.02.02"], # Prirodne znanosti / Fizika / Fizika elementarnih čestica i polja
     #"poveznice": [
         #{
             #"url_vrsta": 990, # 990 = "URL rada koji je dostupan u otvorenom pristupu"

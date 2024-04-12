@@ -272,6 +272,8 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         # Save output
         _temp = {}
         _temp.update(copy.deepcopy(pub_common))
+        if 'ppg' in cfg.cfg_sets[configuration].keys():
+            _temp['ppg'] = cfg.cfg_sets[configuration]['ppg']
         _temp['doi']             = doi
         #_temp['poveznice'][0]['url'] += doi # commented out to avoid duplicate links since CroRIS automatically adds DOI links
         _temp['autor_string']    = authors_string
