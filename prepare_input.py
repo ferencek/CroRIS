@@ -25,9 +25,24 @@ issn             = cfg.issn
 
 def get_list_of_papers(list_of_papers):
     with open(list_of_papers) as f:
-      temp = f.read()
+        temp = f.read()
 
     return bibtexparser.loads(temp)
+
+
+def get_exclusion_list(list_of_DOIs):
+    exclusion_list = []
+
+    with open(list_of_DOIs) as f:
+        lines = f.read().splitlines()
+        for line in lines:
+            # Skip comment lines
+            stripped_line = line.strip()
+            if stripped_line.startswith('#'):
+                continue
+            exclusion_list.append(stripped_line.lower())
+
+    return exclusion_list
 
 
 def get_title_and_abstract(eprint):
@@ -60,9 +75,9 @@ def get_name(name, volume):
 
 def get_volume(name, volume):
     if name in incomplete_journal_names:
-      return volume[1:]
+        return volume[1:]
     else:
-      return volume
+        return volume
 
 
 def get_journal(name):
@@ -79,7 +94,7 @@ def get_issn(name):
     return issn[name]
 
 
-def prepare_input(list_of_papers, output_file, collaboration, keywords):
+def prepare_input(list_of_papers, output_file, collaboration, keywords, exclusion_list):
     dois  = []
     data  = []
     error = []
@@ -95,12 +110,17 @@ def prepare_input(list_of_papers, output_file, collaboration, keywords):
 
         # DOI
         doi = p['doi']
+        doi_lower = doi.lower()
+        # Skip excluded DOIs
+        if doi_lower in exclusion_list:
+            print('\nINFO: This paper with DOI:{} is excluded and will be skipped.'.format(doi))
+            continue
         # Skip any duplicates
-        if doi.lower() in dois:
+        if doi_lower in dois:
             print('\nWARNING: This paper with DOI:{} is a duplicate and will be skipped.'.format(doi))
             continue
         else:
-            dois.append(doi.lower())
+            dois.append(doi_lower)
 
         # Get the arXiv paper id (if defined)
         eprint = (p['eprint'] if 'eprint' in p else '')
@@ -362,8 +382,11 @@ if __name__ == '__main__':
                       metavar="OUTPUT",
                       required=True)
 
-    (options, args) = parser.parse_known_args()
+    parser.add_argument("-e", "--exclude", dest="exclude",
+                      help="List of DOIs to exclude",
+                      metavar="EXCLUDE")
 
+    (options, args) = parser.parse_known_args()
 
     # Load list of papers from a BibTeX file
     list_of_papers = get_list_of_papers(options.input)
@@ -374,5 +397,10 @@ if __name__ == '__main__':
     # Keywords
     keywords = cfg.cfg_sets[options.configuration.lower()]['keywords']
 
+    # Optional exclusion list
+    exclusion_list = []
+    if options.exclude:
+        exclusion_list = get_exclusion_list(options.exclude)
+
     # Create input for CroRIS
-    prepare_input(list_of_papers, options.output, collaboration, keywords)
+    prepare_input(list_of_papers, options.output, collaboration, keywords, exclusion_list)
