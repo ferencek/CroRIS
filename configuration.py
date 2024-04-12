@@ -61,7 +61,8 @@ pub_common = {
     "recenzija": {
         "status": 900,
         "vrsta": 903
-    }#,
+    },
+    "ppg": ["1", "1.02", "1.02.02"], # Prirodne znanosti / Fizika / Fizika elementarnih čestica i polja
     #"poveznice": [
         #{
             #"url_vrsta": 990,
