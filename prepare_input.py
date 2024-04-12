@@ -248,7 +248,7 @@ def prepare_input(list_of_papers, output_file, collaboration, keywords):
         _temp = {}
         _temp.update(copy.deepcopy(pub_common))
         _temp['doi']             = doi
-        #_temp['poveznice'][0]['url'] += doi
+        #_temp['poveznice'][0]['url'] += doi # commented out to avoid duplicate links since CroRIS automatically adds DOI links
         _temp['autor_string']    = authors_string
         _temp['autori']    = autori
         if _collaboration:

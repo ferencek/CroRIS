@@ -1,6 +1,7 @@
 # --------------------------------------------------
 # Configuration
 # --------------------------------------------------
+# More info about attribute values can be found at https://wiki.srce.hr/display/CRORIS/CROSBI+API
 
 # Configuration sets (keys need to be in lower case)
 cfg_sets = {
@@ -30,7 +31,7 @@ cfg_sets = {
 
 # Authors from Croatian institutions (past and present)
 authors = {
-#   Author name       :  Author full name                     CroRIS_ID              Institution_ID
+#    Author_name      : [Author_full_name,                    CroRIS_ID,             Institution_ID]
     'Antunovic, Z'    : ['Antunović, Željko',                 18440,                 114], # retired
     'Bargassa, P'     : ['Bargassa, Pedrame',                 46796,                 66],
     'Brigljevic, V'   : ['Brigljević, Vuko',                  17389,                 66],
@@ -65,19 +66,18 @@ authors = {
 }
 
 # Info that is in common to all publications
-# (see https://wiki.srce.hr/display/CRORIS/CROSBI+API for more info)
 pub_common = {
-    "tip": 760,
-    "status": 965,
+    "tip": 760, # 760 = "izvorni znanstveni rad"
+    "status": 965, # 965 = "objavljeno"
     "suradnja_medjunarodna": "D",
     "recenzija": {
-        "status": 900,
-        "vrsta": 903
+        "status": 900, # 900 = "da"
+        "vrsta": 903 # 903 = "međunarodna recenzija"
     },
     "ppg": ["1", "1.02", "1.02.02"], # Prirodne znanosti / Fizika / Fizika elementarnih čestica i polja
     #"poveznice": [
         #{
-            #"url_vrsta": 990,
+            #"url_vrsta": 990, # 990 = "URL rada koji je dostupan u otvorenom pristupu"
             #"url": "https://doi.org/"
         #}
     #]
@@ -86,17 +86,17 @@ pub_common = {
 inst_dict = {
     "croris_id": None,
     "mbu": None,
-    "uloga": 941
+    "uloga": 941 # 941 = "autorova ustanova"
 }
 # Project template dictionary
 proj_dict = {
     "croris_id": None,
-    "uloga": 1020
+    "uloga": 1020 # 1020 = "rezultat rada na projektu"
 }
 
-# Currently known journals
+# Known journals
 journals = {
-#   Inspire HEP name    : CroRIS name
+#   Inspire HEP name          : CroRIS name
     'JHEP'                    : 'The Journal of high energy physics',
     'Phys. Rev. Lett.'        : 'Physical review letters',
     'Eur. Phys. J. C'         : 'European physical journal C : particles and fields',
@@ -109,9 +109,9 @@ journals = {
     'Nucl. Instrum. Meth. A'  : 'Nuclear instruments & methods in physics research. Section A, Accelerators, spectrometers, detectors and associated equipment'
 }
 
-# ISSNs for currently known journals
+# ISSNs for known journals
 issn = {
-#   Journal name        : [ISSN, e-ISSN]
+#   Journal name              : [ISSN, e-ISSN]
     'JHEP'                    : ['1126-6708', '1029-8479'],
     'Phys. Rev. Lett.'        : ['0031-9007', '1079-7114'],
     'Eur. Phys. J. C'         : ['1434-6044', '1434-6052'],
