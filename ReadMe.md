@@ -40,7 +40,7 @@ Place the pointer above the "cite all" button and select BibTeX in the drop-down
 Please note that the returned list of publications could contain errata published in 2023 for otherwise older publications. Please remove any publications for which the `year` field is older than 2023. In addition, check if there are any publications with more than one DOI string. These are typically the already-mentioned errata publications but it is nevertheless good to double-check the reason for more than one DOI string. A convenient way to get a quick overview of this type of information is to run the following two commands
 
 ```
-cat list_of_papers.bib | grep -i year
+cat list_of_papers.bib | grep -i year | grep -v 2023
 cat list_of_papers.bib | grep -i doi
 ```
 
