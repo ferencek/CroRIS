@@ -184,7 +184,8 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
                     a_dict = copy.deepcopy(author_dict)
                     a_dict['croris_id'] = authors[a][1]
                     autori.append(a_dict)
-                    inst_ids.add(authors[a][2])
+                    if authors[a][2] is not None:
+                        inst_ids.add(authors[a][2])
                     break
 
         # First author

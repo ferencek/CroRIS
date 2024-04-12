@@ -28,14 +28,15 @@ cfg_sets = {
 # CroRIS_ID    Name
 # 21           Fakultet elektrotehnike, strojarstva i brodogradnje u Splitu / Faculty of Electrical Engineering, Mechanical Engineering and Naval Architecture in Split
 # 66           Institut Ruđer Bošković / Ruđer Bošković Institute
+# 78           Tekstilno-tehnološki fakultet, Zagreb / Faculty of Textile Technology in Zagreb
 # 79           Prirodoslovno-matematički fakultet, Zagreb / Faculty of Science in Zagreb
 # 114          Prirodoslovno-matematički fakultet u Splitu / Faculty of Science in Split
 # 288          Sveučilište u Rijeci, Fakultet za fiziku / University of Rijeka, Faculty of Physics
 
 # Authors from Croatian institutions (past and present)
 authors = {
-#    Author_name      : [Author_full_name,                    CroRIS_ID,             Institution_ID]
-    'Antunovic, Z'    : ['Antunović, Željko',                 18440,                 114], # retired
+#    Author_name      : [Author_full_name,                CroRIS_ID,     Institution_ID]
+    'Antunovic, Z'    : ['Antunović, Željko',                 18440,                114], # retired
     'Bargassa, P'     : ['Bargassa, Pedrame',                 46796,                 66],
     'Brigljevic, V'   : ['Brigljević, Vuko',                  17389,                 66],
     'Ceci, S'         : ['Ceci, Saša',                         3333,                 66],
@@ -46,26 +47,26 @@ authors = {
     'Godinovic, N'    : ['Godinović, Nikola',                 14717,                 21],
     'Jakovcic, K'     : ['Jakovčić, Krešimir',                 3340,                 66],
     'Kadija, K'       : ['Kadija, Krešo',                     17565,                 66], # retired
-    'Kovac, M'        : ['Kovač, Marko',                      30446,                 114],
+    'Kovac, M'        : ['Kovač, Marko',                      30446,                114],
     'Lelas, D'        : ['Lelas, Damir',                      27649,                 21],
-    'Lelas, K'        : ['Lelas, Karlo',                      27596,                 21], # now at Faculty of Textile Technology, University of Zagreb, no longer in CMS
+    'Lelas, K'        : ['Lelas, Karlo',                      27596,                 78], # no longer in CMS
     'Luetic, J'       : ['Luetić, Jelena',                    30615,                 66], # inactive
     'Majumder, D'     : ['Majumder, Devdatta',                36095,                 66], # inactive
-    'Mekterovic, D'   : ['Mekterović, Darko',                  2640,                 66], # now at UniRi, no longer in CMS
+    'Mekterovic, D'   : ['Mekterović, Darko',                  2640,                288], # no longer in CMS
     'Mesic, B'        : ['Mesić, Benjamin',                   33599,                 66], # inactive
-    'Micanovic, S'    : ['Mićanović, Saša',                   21402,                 66], # now at UniRi, no longer in CMS
+    'Micanovic, S'    : ['Mićanović, Saša',                   21402,                288], # no longer in CMS
     'Mishra, S'       : ['Mishra, Saswat',                    35489,                 66],
-    'Morovic, S'      : ['Morović, Srećko',                   21401,                 66], # now at UCSD
-    'Petkovic, A'     : ['Petković, Andro',                   37949,                 114],
+    'Morovic, S'      : ['Morović, Srećko',                   21401,               None], # now at UCSD
+    'Petkovic, A'     : ['Petković, Andro',                   37949,                114],
     'Polic, D'        : ['Polić, Dunja',                        251,                 21], # inactive
     'Puljak, I'       : ['Puljak, Ivica',                      4129,                 21],
-    'Roguljic, M'     : ['Roguljić, Matej',                   34885,                 66], # now at JHU
+    'Roguljic, M'     : ['Roguljić, Matej',                   34885,               None], # now at JHU
     'Starodumov, A'   : ['Starodumov, Andrey',                46806,                 66], # Andrey's name written as 'Andrei' in the CMS database
     'Sudic, L'        : ['Sudić, Lucija',                      None,                 66], # inactive (djevojačko / maiden Tikvica)
     'Tikvica, L'      : ['Tikvica, Lucija',                    None,                 66], # inactive
     'Susa, T'         : ['Šuša, Tatjana',                      4291,                 66],
     'Sculac, A'       : ['Šćulac, Ana',                       46885,                 21],
-    'Sculac, T'       : ['Šćulac, Toni',                      33266,                 114]
+    'Sculac, T'       : ['Šćulac, Toni',                      33266,                114]
 }
 
 # Info that is in common to all publications
