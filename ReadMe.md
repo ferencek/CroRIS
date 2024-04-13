@@ -66,7 +66,7 @@ The format of the output JSON file conforms to the specifications of the [CroRIS
 
 ## Importing publications to CroRIS
 
-Send the output JSON file `CroRIS_input.json` to croris-app@srce.hr and system admins will take care of the import.
+Send the output JSON file `CroRIS_input.json` to croris-app@srce.hr and system admins will take care of the import. In case the JSON would contain any publications that are already in the CroRIS database, those publications will be skipped during the import based on their DOI identifiers.
 
 ## Advanced options
 
