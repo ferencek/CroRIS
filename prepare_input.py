@@ -174,12 +174,12 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
         # All authors
         for author in all_authors:
+            author_name = author['full_name']
             # Cro authors
             for a in authors:
                 a_pretty = authors[a][0]
 
-                author_text = author['full_name']
-                if a in author_text:
+                if a in author_name:
                     authors_pretty.append(a_pretty)
                     a_dict = copy.deepcopy(author_dict)
                     a_dict['croris_id'] = authors[a][1]
