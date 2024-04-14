@@ -157,8 +157,15 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
         # Authors
         all_authors = paper_data['metadata']['authors']
+        all_author_names = []
 
-        # List that contains authors' CroRIS IDs
+        # Switch for storing the full author list
+        fullAuthorList = False
+        # Check if the switch is defined in the used configuration set
+        if 'fullAuthorList' in cfg.cfg_sets[configuration].keys():
+            fullAuthorList = cfg.cfg_sets[configuration]['fullAuthorList']
+
+        # List that contains CroRIS IDs for found authors from Croatian institutions
         autori = []
         author_dict = {
             "croris_id": None,
@@ -169,33 +176,132 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         # Set that contains author institutions' CroRIS IDs
         inst_ids = set()
 
-        # List that contains authors' full names
+        # List that contains full names for found authors from Croatian institutions
         authors_pretty = []
+        # List that contains indices in the list of all authors for found authors from Croatian institutions
+        authors_idx = []
 
         # All authors
-        for author in all_authors:
+        for idx, author in enumerate(all_authors):
             author_name = author['full_name']
-            # Cro authors
+            if fullAuthorList:
+                all_author_names.append(author_name)
+            # Authors from Croatian institutions
             for a in authors:
                 a_pretty = authors[a][0]
 
                 if a in author_name:
                     authors_pretty.append(a_pretty)
-                    a_dict = copy.deepcopy(author_dict)
-                    a_dict['croris_id'] = authors[a][1]
-                    autori.append(a_dict)
+                    authors_idx.append(idx)
+                    if authors[a][1] is not None:
+                        a_dict = copy.deepcopy(author_dict)
+                        a_dict['croris_id'] = authors[a][1]
+                        autori.append(a_dict)
                     if authors[a][2] is not None:
                         inst_ids.add(authors[a][2])
                     break
 
-        # First author
-        authors_string = all_authors[0]['full_name'] + ' ; ... ; '
+        # Check if any authors are found
+        if len(authors_pretty)==0:
+            print('\nWARNING: No authors found for this paper with DOI:{}. Skipping.'.format(doi))
+            continue
 
-        # Sorted authors from Croatian institutions
-        authors_string += ' ; '.join(sorted(authors_pretty, key=locale.strxfrm))
+        # Any authors at the start (first two places) or at the end (last two places) of the full author list?
+        authorsAtStartOrEnd = (authors_idx[0]<2 or authors_idx[-1]>(len(all_authors)-3))
 
-        # Last author
-        authors_string += ' ; ... ; ' + all_authors[len(all_authors)-1]['full_name']
+        # Switch for sorting authors from Croatian institutions
+        sortAuthors = False
+        # Check if the switch is defined in the used configuration set
+        if 'sortAuthors' in cfg.cfg_sets[configuration].keys():
+            # Allow sorting only if there are no authors at the start or at the end of the full author list
+            if not authorsAtStartOrEnd:
+                sortAuthors = cfg.cfg_sets[configuration]['sortAuthors']
+            else:
+                print('\nWARNING: Some authors appear at the start or at the end of the full author list. Sorting will be disabled.')
+
+        # Now build the authors string
+        # Full author list
+        if fullAuthorList:
+            authors_string = ' ; '.join(all_author_names)
+        # Pruned author list
+        else:
+            # Authors not at the start or at the end of the full author list
+            if not authorsAtStartOrEnd:
+                # First author
+                author_names = [all_authors[0]['full_name']]
+                # Ellipsis
+                author_names += ['...']
+                # Authors from Croatian institutions
+                author_names += (sorted(authors_pretty, key=locale.strxfrm) if sortAuthors else authors_pretty)
+                # Ellipsis
+                author_names += ['...']
+                # Last author
+                author_names += [all_authors[-1]['full_name']]
+            # More complicated case when authors appear at the start or at the end of the full author list
+            else:
+                author_names = []
+                insertedEllipsis = False
+                # Loop over author indices and check various possibilities
+                for i, a_idx in enumerate(authors_idx):
+                    # First found author
+                    if i==0:
+                        # If also first in the full author list
+                        if a_idx==0:
+                            # Author
+                            author_names += [authors_pretty[i]]
+                        else:
+                            # First author
+                            author_names += [all_authors[0]['full_name']]
+                            # If second in the full author list
+                            if a_idx==1:
+                                # Author
+                                author_names += [authors_pretty[i]]
+                            else:
+                                # Ellipsis
+                                author_names += ['...']
+                                insertedEllipsis = True
+                                # Author
+                                author_names += [authors_pretty[i]]
+                    else:
+                        idx_diff = (a_idx - authors_idx[i-1])
+                        # Consecutive found authors not consecutive in the full author list
+                        if idx_diff>1 and not insertedEllipsis:
+                            # Ellipsis
+                            author_names += ['...']
+                            insertedEllipsis = True
+                            # Author
+                            author_names += [authors_pretty[i]]
+                        else:
+                            # Author
+                            author_names += [authors_pretty[i]]
+                # Finally, deal with the end of the author list
+                # Last found author not at the end of the full author list
+                if not (authors_idx[-1]>(len(all_authors)-3)):
+                    # Ellipsis
+                    author_names += ['...']
+                    # Last author
+                    author_names += [all_authors[-1]['full_name']]
+                else:
+                    # Check if additional ellipsis needs to be inserted
+                    # Reversed list of author indices
+                    authors_idx_r = authors_idx[::-1]
+                    for i, a_idx in enumerate(authors_idx_r):
+                        # Break the loop once the last element is reached
+                        if i==(len(authors_idx)-1):
+                            break
+                        idx_diff = (a_idx - authors_idx_r[i+1])
+                        n_idx = (len(author_names)-2-i)
+                        # Consecutive found authors not consecutive in the full author list
+                        if idx_diff>1 and author_names[n_idx] != '...':
+                            # Ellipsis
+                            author_names.insert(n_idx+1, '...')
+                            break
+                    # Last found author second to last in the full author list
+                    if authors_idx[-1]==(len(all_authors)-2):
+                        # Last author
+                        author_names += [all_authors[-1]['full_name']]
+
+            authors_string = ' ; '.join(author_names)
 
         # Collaboration
         if collaboration != 'off':
