@@ -106,6 +106,7 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
     counter = 0
     counter_skip = 0
+    counter_error = 0
 
     # Loop over all papers which are stored in bib
     for n, p in enumerate(list_of_papers.entries, 1):
@@ -118,10 +119,12 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         doi_lower = doi.lower()
         # Skip excluded DOIs
         if doi_lower in exclusion_list:
+            counter_skip += 1
             print('\nINFO: This paper with DOI:{} is excluded and will be skipped.'.format(doi))
             continue
         # Skip any duplicates
         if doi_lower in dois:
+            counter_skip += 1
             print('\nWARNING: This paper with DOI:{} is a duplicate and will be skipped.'.format(doi))
             continue
         else:
@@ -203,6 +206,7 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
         # Check if any authors are found
         if len(authors_pretty)==0:
+            counter_skip += 1
             print('\nWARNING: No authors found for this paper with DOI:{}. Skipping.'.format(doi))
             continue
 
@@ -435,7 +439,7 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         # Catch articles with unknown journal or invalid page info status
         if 'Unknown journal' in journal or (validity_counter[0] < 2 and validity_counter[1] < 2):
           error.append(_temp)
-          counter_skip += 1
+          counter_error += 1
         else:
           data.append(_temp)
           counter += 1
@@ -460,15 +464,19 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
     print('------------------------------------------------')
 
-    print('\n%i papers prepared for upload\n' % counter)
+    print('\n%i paper(s) prepared for upload\n' % counter)
     if counter_skip > 0:
-        print('%i papers skipped\n' % counter_skip)
+        print('%i paper(s) skipped\n' % counter_skip)
+    if counter_error > 0:
+        print('%i paper(s) with unknown journal(s)\n' % counter_error)
 
     # Output file, i.e. input for CroRIS
-    with open(output_file, 'w', encoding='utf8') as outfile:
-        json.dump(data, outfile, ensure_ascii=False, indent=2)
+    if counter > 0:
+        with open(output_file, 'w', encoding='utf8') as outfile:
+            json.dump(data, outfile, ensure_ascii=False, indent=2)
 
-    if len(error) > 0:
+    # Output file for papers with unknown journals
+    if counter_error > 0:
         with open(output_file.rstrip('.json')+'_error.json', 'w', encoding='utf8') as outfile:
             json.dump(error, outfile, ensure_ascii=False, indent=2)
 
