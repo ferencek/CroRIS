@@ -2,6 +2,8 @@
 
 A tool for uploading publication entries to the [CroRIS](https://www.croris.hr/) database. The instructions below were tested on Ubuntu 20.04 but might also work on other Linux distributions. The tool has been derived from an older [CROSBI tool](https://gitlab.cern.ch/CMS-IRB/crosbi) which is no longer in use.
 
+Please note that this tool relies on the [Inspire HEP](https://inspirehep.net) database to fetch all the necessary publication data and, as such, is primarily targeting publications in branches of physics well covered by that database.
+
 ## Getting started
 
 ### Installation
@@ -91,3 +93,7 @@ To link project(s) to a specific publication, an additional `projects` field con
     year = "2023"
 }
 ```
+
+## Contact information
+
+E-mail: Dinko.Ferencek@irb.hr
