@@ -236,7 +236,18 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
                 # Ellipsis
                 author_names += ['...']
                 # Authors from Croatian institutions
-                author_names += (sorted(authors_pretty, key=locale.strxfrm) if sortAuthors else authors_pretty)
+                if sortAuthors:
+                    author_names += sorted(authors_pretty, key=locale.strxfrm)
+                else:
+                    # Loop over author indices
+                    for i, a_idx in enumerate(authors_idx):
+                        idx_diff = ((a_idx - authors_idx[i-1]) if i>0 else 1)
+                        # Consecutive found authors not consecutive in the full author list
+                        if idx_diff>1:
+                            # Ellipsis
+                            author_names += ['...']
+                        # Author
+                        author_names += [authors_pretty[i]]
                 # Ellipsis
                 author_names += ['...']
                 # Last author
@@ -244,7 +255,6 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
             # More complicated case when authors appear at the start or at the end of the full author list
             else:
                 author_names = []
-                insertedEllipsis = False
                 # Loop over author indices and check various possibilities
                 for i, a_idx in enumerate(authors_idx):
                     # First found author
@@ -263,47 +273,25 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
                             else:
                                 # Ellipsis
                                 author_names += ['...']
-                                insertedEllipsis = True
                                 # Author
                                 author_names += [authors_pretty[i]]
                     else:
                         idx_diff = (a_idx - authors_idx[i-1])
                         # Consecutive found authors not consecutive in the full author list
-                        if idx_diff>1 and not insertedEllipsis:
+                        if idx_diff>1:
                             # Ellipsis
                             author_names += ['...']
-                            insertedEllipsis = True
-                            # Author
-                            author_names += [authors_pretty[i]]
-                        else:
-                            # Author
-                            author_names += [authors_pretty[i]]
+                        # Author
+                        author_names += [authors_pretty[i]]
                 # Finally, deal with the end of the author list
-                # Last found author not at the end of the full author list
+                # Last found author not among the last two in the full author list
                 if not (authors_idx[-1]>(len(all_authors)-3)):
                     # Ellipsis
                     author_names += ['...']
+                # Last found author not the last in the full author list
+                if not (authors_idx[-1]==(len(all_authors)-1)):
                     # Last author
                     author_names += [all_authors[-1]['full_name']]
-                else:
-                    # Check if additional ellipsis needs to be inserted
-                    # Reversed list of author indices
-                    authors_idx_r = authors_idx[::-1]
-                    for i, a_idx in enumerate(authors_idx_r):
-                        # Break the loop once the last element is reached
-                        if i==(len(authors_idx)-1):
-                            break
-                        idx_diff = (a_idx - authors_idx_r[i+1])
-                        n_idx = (len(author_names)-2-i)
-                        # Consecutive found authors not consecutive in the full author list
-                        if idx_diff>1 and author_names[n_idx] != '...':
-                            # Ellipsis
-                            author_names.insert(n_idx+1, '...')
-                            break
-                    # Last found author second to last in the full author list
-                    if authors_idx[-1]==(len(all_authors)-2):
-                        # Last author
-                        author_names += [all_authors[-1]['full_name']]
 
             authors_string = ' ; '.join(author_names)
 
