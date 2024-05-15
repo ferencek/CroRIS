@@ -22,9 +22,6 @@ cfg_sets = {
         # Some always used generic keywords, the rest taken from Inspire HEP
         'keywords': ['High energy physics', 'Experimental particle physics', 'LHC', 'CMS'],
 
-        # Switch for sorting authors from Croatian institutions
-        'sortAuthors': True,
-
         # Area/Field/Branch (Područje/Polje/Grana)
         "ppg": ["1", "1.02", "1.02.02"] # Prirodne znanosti / Fizika / Fizika elementarnih čestica i polja
     }
