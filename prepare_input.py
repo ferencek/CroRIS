@@ -77,7 +77,7 @@ def get_volume(name, volume):
 
 def get_journal(name):
     if name not in journals.keys():
-        return "*** Unknown journal '" + name + "' encountered! Please put it in the list of known journals or remove this article from the input list. ***"
+        return None
 
     return journals[name]
 
@@ -102,11 +102,13 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
     dois  = []
     data  = []
-    error = []
-
-    counter = 0
-    counter_skip = 0
-    counter_error = 0
+    unknownJournals = set()
+    unknown_counter = 0
+    skip_counter = 0
+    excluded = []
+    duplicates = []
+    noAuthor = []
+    invalidPage = []
 
     # Loop over all papers which are stored in bib
     for n, p in enumerate(list_of_papers.entries, 1):
@@ -119,12 +121,14 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         doi_lower = doi.lower()
         # Skip excluded DOIs
         if doi_lower in exclusion_list:
-            counter_skip += 1
+            skip_counter += 1
+            excluded.append(doi)
             print('\nINFO: This paper with DOI:{} is excluded and will be skipped.'.format(doi))
             continue
         # Skip any duplicates
         if doi_lower in dois:
-            counter_skip += 1
+            skip_counter += 1
+            duplicates.append(doi)
             print('\nWARNING: This paper with DOI:{} is a duplicate and will be skipped.'.format(doi))
             continue
         else:
@@ -132,7 +136,20 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
         # Get the arXiv paper id (if defined)
         eprint = (p['eprint'] if 'eprint' in p else '')
-    
+
+        # Get fixed journal name (see more detailed description above)
+        journal_name = get_name(p['journal'], p['volume'])
+
+        # Journal (according to CroRIS nomenclature)
+        journal = get_journal(journal_name)
+
+        # Catch articles from unknown journals
+        if journal is None:
+            unknown_counter += 1
+            unknownJournals.add(journal_name)
+            print('\nWARNING: This paper with DOI:{} was published in an unknown journal {}. Skipping.'.format(doi, journal_name))
+            continue
+
         # Fetch paper data from Inspire HEP in JSON format
         # More info at: https://github.com/inspirehep/rest-api-doc
         url = 'https://inspirehep.net/api/doi/{}'.format(doi)
@@ -206,7 +223,8 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
         # Check if any authors are found
         if len(authors_pretty)==0:
-            counter_skip += 1
+            skip_counter += 1
+            noAuthor.append(doi)
             print('\nWARNING: No authors found for this paper with DOI:{}. Skipping.'.format(doi))
             continue
 
@@ -307,14 +325,8 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         # Year
         year = p['year']
 
-        # Get fixed journal name (see more detailed description above)
-        journal_name = get_name(p['journal'], p['volume'])
-
         # Volume
         volume = get_volume(p['journal'], p['volume'])
-
-        # Journal (according to CroRIS nomenclature)
-        journal = get_journal(journal_name)
 
         # ISSN
         issn = get_issn(journal_name)
@@ -398,6 +410,13 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
             _temp['ukupno_stranica'] = page_tot
             validity_counter[1] += 1
 
+        # Check page info status
+        if validity_counter[0] < 2 and validity_counter[1] < 2:
+            skip_counter += 1
+            invalidPage.append(doi)
+            print('\nWARNING: This paper with DOI:{} has invalid page info. Skipping.'.format(doi))
+            continue
+
         ml = [
             {
                 "jezik": "en",
@@ -424,13 +443,9 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
                 projekti.append(p_dict)
             _temp['projekti'] = projekti
 
-        # Catch articles with unknown journal or invalid page info status
-        if 'Unknown journal' in journal or (validity_counter[0] < 2 and validity_counter[1] < 2):
-          error.append(_temp)
-          counter_error += 1
-        else:
-          data.append(_temp)
-          counter += 1
+
+        # Append paper info
+        data.append(_temp)
 
         print('\nDOI:', doi)
         print('arXiv:', (eprint if eprint != '' else 'N/A'))
@@ -452,21 +467,37 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
 
     print('------------------------------------------------')
 
-    print('\n%i paper(s) prepared for upload\n' % counter)
-    if counter_skip > 0:
-        print('%i paper(s) skipped\n' % counter_skip)
-    if counter_error > 0:
-        print('%i paper(s) with unknown journal(s)\n' % counter_error)
+    print('\n%i paper(s) prepared for upload' % len(data))
+    if skip_counter > 0:
+        print('\n%i paper(s) skipped:' % skip_counter)
+        if len(excluded) > 0:
+            print('\n  %i excluded DOIs:\n' % len(excluded))
+            for doi in excluded:
+                print('  {}'.format(doi))
+        if len(duplicates) > 0:
+            print('\n  %i duplicate DOIs:\n' % len(duplicates))
+            for doi in duplicates:
+                print('  {}'.format(doi))
+        if len(noAuthor) > 0:
+            print('\n  %i DOIs with missing author info:\n' % len(noAuthor))
+            for doi in noAuthor:
+                print('  {}'.format(doi))
+        if len(invalidPage) > 0:
+            print('\n  %i DOIs with invalid page info:\n' % len(invalidPage))
+            for doi in invalidPage:
+                print('  {}'.format(doi))
+        if unknown_counter == 0:
+            print('')
+    if unknown_counter > 0:
+        print('\n%i paper(s) from the following unknown journal(s):\n' % unknown_counter)
+        for j in sorted(unknownJournals):
+            print(j)
+        print('\nPlease add the unknown journal info to configuration.py\n')
 
     # Output file, i.e. input for CroRIS
-    if counter > 0:
+    if len(data) > 0:
         with open(output_file, 'w', encoding='utf8') as outfile:
             json.dump(data, outfile, ensure_ascii=False, indent=2)
-
-    # Output file for papers with unknown journals
-    if counter_error > 0:
-        with open(output_file.rstrip('.json')+'_error.json', 'w', encoding='utf8') as outfile:
-            json.dump(error, outfile, ensure_ascii=False, indent=2)
 
 # --------------------------------------------------
 
