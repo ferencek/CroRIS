@@ -493,7 +493,7 @@ if __name__ == '__main__':
                       required=True)
 
     parser.add_argument("-e", "--exclude", dest="exclude",
-                      help="List of DOIs to exclude",
+                      help="Text file containing a list of DOIs to exclude (one per line)",
                       metavar="EXCLUDE")
 
     (options, args) = parser.parse_known_args()
