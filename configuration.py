@@ -113,7 +113,8 @@ journals = {
     'Nature'                  : 'Nature',
     'Nature Phys.'            : 'Nature physics',
     'Comput. Softw. Big Sci.' : 'Computing and software for big science',
-    'Nucl. Instrum. Meth. A'  : 'Nuclear instruments & methods in physics research. Section A, Accelerators, spectrometers, detectors and associated equipment'
+    'Nucl. Instrum. Meth. A'  : 'Nuclear instruments & methods in physics research. Section A, Accelerators, spectrometers, detectors and associated equipment',
+    'Rept. Prog. Phys.'       : 'Reports on progress in physics'
 }
 
 # ISSNs for known journals
@@ -129,7 +130,8 @@ issn = {
     'Nature'                  : ['0028-0836', '1476-4687'],
     'Nature Phys.'            : ['1745-2473', '1745-2481'],
     'Comput. Softw. Big Sci.' : ['2510-2036', '2510-2044'],
-    'Nucl. Instrum. Meth. A'  : ['0168-9002', '1872-9576']
+    'Nucl. Instrum. Meth. A'  : ['0168-9002', '1872-9576'],
+    'Rept. Prog. Phys.'       : ['0034-4885', '1361-6633']
 }
 
 # --------------------------------------------------
