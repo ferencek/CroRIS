@@ -11,7 +11,7 @@ Please note that this tool relies on the [Inspire HEP](https://inspirehep.net) d
 ```
 virtualenv -p python3.8 croris-env
 source croris-env/bin/activate
-git clone https://gitlab.cern.ch/CMS-IRB/CroRIS.git
+git clone https://github.com/ferencek/CroRIS.git
 cd CroRIS
 pip install -r requirements.txt
 ```
