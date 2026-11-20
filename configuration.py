@@ -118,7 +118,9 @@ journals = {
     'Nucl. Instrum. Meth. A'  : 'Nuclear instruments & methods in physics research. Section A, Accelerators, spectrometers, detectors and associated equipment',
     'Rept. Prog. Phys.'       : 'Reports on progress in physics',
     'Nature Commun.'          : 'Nature communications',
-    'Phys. Rept.'             : 'Physics reports'
+    'Phys. Rept.'             : 'Physics reports',
+    'J. Phys. G'              : 'Journal of physics. G, Nuclear and particle physics',
+    'Mach. Learn. Sci. Tech.' : 'Machine learning: science and technology',
 }
 
 # ISSNs for known journals
@@ -137,7 +139,9 @@ issn = {
     'Nucl. Instrum. Meth. A'  : ['0168-9002', '1872-9576'],
     'Rept. Prog. Phys.'       : ['0034-4885', '1361-6633'],
     'Nature Commun.'          : [ None,       '2041-1723'],
-    'Phys. Rept.'             : ['0370-1573', '1873-6270']
+    'Phys. Rept.'             : ['0370-1573', '1873-6270'],
+    'J. Phys. G'              : ['0954-3899', '1361-6471'],
+    'Mach. Learn. Sci. Tech.' : [None,        '2632-2153'],
 }
 
 # --------------------------------------------------
