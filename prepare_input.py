@@ -351,7 +351,7 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
             page_last = pages[-1] # this works even if the page range uses double hyphen '--'
         else:
             article_no = pages
-            page_tot = str(paper_data['metadata']['number_of_pages'])
+            page_tot = str(paper_data['metadata']['number_of_pages']) if 'number_of_pages' in paper_data['metadata'] else p['totpages']
 
         # Keywords
         # CROSBI had a limit of 500 characters on the maximum length of the keyword string
@@ -366,14 +366,15 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
             else:
                 break
 
-        for k in paper_data['metadata']['keywords']:
-            k_text = k['value'].strip()
-            if not k_text.lower() in keywords_lower:
-                if (keywords_length + len(k_text) + 2) < 480:
-                    keywords_length += (len(k_text) + 2)
-                    _keywords.append(k_text)
-                else:
-                    break
+        if 'keywords' in paper_data['metadata']:
+            for k in paper_data['metadata']['keywords']:
+                k_text = k['value'].strip()
+                if not k_text.lower() in keywords_lower:
+                    if (keywords_length + len(k_text) + 2) < 480:
+                        keywords_length += (len(k_text) + 2)
+                        _keywords.append(k_text)
+                    else:
+                        break
 
         # Page info validity counter
         # Need to make sure that either the article number and the total number of pages
@@ -392,8 +393,9 @@ def prepare_input(list_of_papers, output_file, configuration, exclusion_list):
         if _collaboration:
             _temp['kolaboracija'] = _collaboration
         _temp['godina']          = year
-        _temp['issn']            = issn[0]
-        _temp['e-issn']          = issn[1]
+        if issn[0] is not None:
+            _temp['issn'] = issn[0]
+        _temp['e-issn'] = issn[1]
         _temp['volumen']         = volume
         if number:
             _temp['svescic']         = number
