@@ -51,7 +51,7 @@ Either way, you will need to decide how to handle such publications, exclude the
 3. Check that the content of [`configuration.py`](https://gitlab.cern.ch/CMS-IRB/CroRIS/blob/master/configuration.py) is correctly defined. Next, run the following command
 
 ```
-python prepare_input.py -c cms -i list_of_papers.bib -o CroRIS_input.json |& tee prepare_input_`date "+%Y%m%d_%H%M%S"`.log
+python -u prepare_input.py -c cms -i list_of_papers.bib -o CroRIS_input.json |& tee prepare_input_`date "+%Y%m%d_%H%M%S"`.log
 ```
 
 where the `-c` argument should be set as appropriate. For more information about the available command-line options, run
