@@ -40,10 +40,12 @@ cfg_sets = {
 authors = {
 #    Author_name      : [Author_full_name,                CroRIS_ID,     Institution_ID]
     'Antunovic, Z'    : ['Antunović, Željko',                 18440,                114], # retired
+    'Asenov, P'       : ['Asenov, Patrick',                   55305,                 66], # retired
     'Bargassa, P'     : ['Bargassa, Pedrame',                 46796,                 66],
     'Brigljevic, V'   : ['Brigljević, Vuko',                  17389,                 66],
     'Ceci, S'         : ['Ceci, Saša',                         3333,                 66],
     'Chitroda, B'     : ['Chitroda, Bhakti Kanulal',          37350,                 66],
+    'Cormenier, S'    : ['Cormenier, Sacha Samson Nohan',     54496,                 66],
     'Duric, S'        : ['Đurić, Senka',                      27211,                 66], # inactive
     'Ferencek, D'     : ['Ferenček, Dinko',                   32647,                 66],
     'Giljanovic, D'   : ['Giljanović, Duje',                  34122,                 21], # inactive
